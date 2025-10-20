@@ -1229,26 +1229,60 @@ class ClassPlanner {
         
         calendarDays.innerHTML = '';
         
-        // Días del mes anterior
+        // Calcular cuántos días de lunes a viernes necesitamos mostrar
+        const totalDays = daysInMonth;
+        const weeks = Math.ceil(totalDays / 7);
+        const totalWeekdays = weeks * 5; // Solo lunes a viernes
+        
+        // Días del mes anterior (solo lunes a viernes)
         const prevMonth = new Date(this.currentYear, this.currentMonth - 1, 0);
+        let prevMonthDays = [];
         for (let i = startDayOfWeek - 1; i >= 0; i--) {
             const day = prevMonth.getDate() - i;
-            const dayElement = this.createCalendarDay(day, true, cycle);
-            calendarDays.appendChild(dayElement);
+            const date = new Date(this.currentYear, this.currentMonth - 1, day);
+            const dayOfWeek = date.getDay();
+            // Solo agregar si es lunes a viernes (1-5)
+            if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+                prevMonthDays.push(day);
+            }
         }
         
-        // Días del mes actual
+        // Mostrar días del mes anterior
+        prevMonthDays.forEach(day => {
+            const dayElement = this.createCalendarDay(day, true, cycle);
+            calendarDays.appendChild(dayElement);
+        });
+        
+        // Días del mes actual (solo lunes a viernes)
         for (let day = 1; day <= daysInMonth; day++) {
-            const dayElement = this.createCalendarDay(day, false, cycle);
-            calendarDays.appendChild(dayElement);
+            const date = new Date(this.currentYear, this.currentMonth, day);
+            const dayOfWeek = date.getDay();
+            // Solo mostrar si es lunes a viernes (1-5)
+            if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+                const dayElement = this.createCalendarDay(day, false, cycle);
+                calendarDays.appendChild(dayElement);
+            }
         }
         
-        // Días del mes siguiente
-        const remainingDays = 42 - (startDayOfWeek + daysInMonth);
-        for (let day = 1; day <= remainingDays; day++) {
+        // Días del mes siguiente (solo lunes a viernes)
+        const nextMonth = new Date(this.currentYear, this.currentMonth + 1, 1);
+        let nextMonthDays = [];
+        let day = 1;
+        while (nextMonthDays.length < 5) { // Completar hasta tener 5 días de la semana siguiente
+            const date = new Date(this.currentYear, this.currentMonth + 1, day);
+            const dayOfWeek = date.getDay();
+            // Solo agregar si es lunes a viernes (1-5)
+            if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+                nextMonthDays.push(day);
+            }
+            day++;
+        }
+        
+        // Mostrar días del mes siguiente
+        nextMonthDays.forEach(day => {
             const dayElement = this.createCalendarDay(day, true, cycle);
             calendarDays.appendChild(dayElement);
-        }
+        });
     }
 
     createCalendarDay(dayNumber, isOtherMonth, cycle) {
@@ -1300,7 +1334,14 @@ class ClassPlanner {
             dayElement.classList.add('editable-cycle');
         }
         
+        // Formatear la fecha para mostrar
+        const dayOfWeek = date.getDay();
+        const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+        const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
+                           'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+        
         dayElement.innerHTML = `
+            <div class="day-date">${dayNumber} ${monthNames[date.getMonth()]}</div>
             <div class="day-cycle">Día ${cycleDay}</div>
             <div class="day-classes">
                 ${dayClasses.map(cls => `
