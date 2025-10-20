@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Planeación de Clases</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles-additions.css">
+    <link rel="stylesheet" href="auth-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Supabase -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo-section">
+                <div class="logo">
+                    <div class="logo-fs">
+                        <span class="fs-letter">F</span>
+                        <span class="fs-letter">S</span>
+                    </div>
+                    <div class="logo-text">Systems</div>
+                </div>
+            </div>
+            <h1>Sistema de Planeación de Clases</h1>
+        </header>
+
+        <!-- Menú de navegación por grados -->
+        <nav class="grades-nav">
+            <div class="nav-container">
+                <div class="nav-title">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Navegación por Grados</span>
+                </div>
+                <div class="grades-menu">
+                    <button class="grade-btn active" data-grade="all">
+                        <i class="fas fa-list"></i>
+                        <span>Todos</span>
+                        <div class="grade-count" id="count-all">0</div>
+                    </button>
+                    <button class="grade-btn" data-grade="1">
+                        <span>1°</span>
+                        <div class="grade-count" id="count-1">0</div>
+                    </button>
+                    <button class="grade-btn" data-grade="2">
+                        <span>2°</span>
+                        <div class="grade-count" id="count-2">0</div>
+                    </button>
+                    <button class="grade-btn" data-grade="3">
+                        <span>3°</span>
+                        <div class="grade-count" id="count-3">0</div>
+                    </button>
+                    <button class="grade-btn" data-grade="4">
+                        <span>4°</span>
+                        <div class="grade-count" id="count-4">0</div>
+                    </button>
+                    <button class="grade-btn" data-grade="5">
+                        <span>5°</span>
+                        <div class="grade-count" id="count-5">0</div>
+                    </button>
+                    <button class="grade-btn" data-grade="6">
+                        <span>6°</span>
+                        <div class="grade-count" id="count-6">0</div>
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <!-- Formulario de nueva planeación -->
+            <aside class="sidebar">
+                <div class="form-container">
+                    <h2><i class="fas fa-plus-circle"></i> Nueva Planeación</h2>
+                    <form id="planForm">
+                        <div class="form-group">
+                            <label for="grade">Grado:</label>
+                            <select id="grade" required>
+                                <option value="">Seleccionar grado</option>
+                                <option value="1">1°</option>
+                                <option value="2">2°</option>
+                                <option value="3">3°</option>
+                                <option value="4">4°</option>
+                                <option value="5">5°</option>
+                                <option value="6">6°</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="homeroom">Homeroom:</label>
+                            <select id="homeroom" required>
+                                <option value="">Seleccionar homeroom</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="group">Grupo:</label>
+                            <select id="group">
+                                <option value="">Seleccionar grupo (opcional)</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="subject">Materia:</label>
+                            <input type="text" id="subject" value="Tecnología" readonly style="background-color: #f7fafc; color: #4a5568;">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="topic">Tema:</label>
+                            <input type="text" id="topic" placeholder="Ej: Fracciones (opcional)">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Descripción:</label>
+                            <textarea id="description" placeholder="Descripción de la clase..." rows="3"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="date">Fecha:</label>
+                            <input type="date" id="date" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="cycleDay">Día del ciclo:</label>
+                            <select id="cycleDay" required>
+                                <option value="">Seleccionar día</option>
+                                <option value="1">Día 1</option>
+                                <option value="2">Día 2</option>
+                                <option value="3">Día 3</option>
+                                <option value="4">Día 4</option>
+                                <option value="5">Día 5</option>
+                                <option value="6">Día 6</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="period">Período:</label>
+                            <select id="period" required>
+                                <option value="">Seleccionar período</option>
+                                <option value="P1">P1 (7:55 AM - 8:50 AM)</option>
+                                <option value="P2">P2 (9:20 AM - 10:15 AM)</option>
+                                <option value="P3">P3 (10:20 AM - 11:15 AM)</option>
+                                <option value="P4">P4 (11:20 AM - 12:15 PM)</option>
+                                <option value="P5">P5 (1:00 PM - 1:55 PM)</option>
+                                <option value="P6">P6 (2:00 PM - 2:50 PM)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notes">Notas de progreso:</label>
+                            <textarea id="notes" placeholder="Documenta hasta dónde llegaste en la clase para poder retomar desde este punto..." rows="4"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-plus"></i> Agregar Planeación
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Estadísticas -->
+                <div class="stats-container">
+                    <h3><i class="fas fa-chart-bar"></i> Estadísticas</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number" id="totalClasses">0</div>
+                            <div class="stat-label">Total</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="completedClasses">0</div>
+                            <div class="stat-label">Completadas</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number" id="pendingClasses">0</div>
+                            <div class="stat-label">Pendientes</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Clases Finalizadas -->
+                <div class="completed-classes-container">
+                    <h3><i class="fas fa-archive"></i> Clases Finalizadas</h3>
+                    <div class="completed-classes-list" id="completedClassesList">
+                        <div class="empty-completed">
+                            <i class="fas fa-check-circle"></i>
+                            <p>No hay clases finalizadas</p>
+                        </div>
+                    </div>
+                    <button id="reactivateClassesBtn" class="btn-secondary" style="display: none;">
+                        <i class="fas fa-undo"></i> Reactivar para Nuevo Año
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Contenido principal -->
+            <main class="content">
+                <div class="content-header">
+                    <div class="current-view">
+                        <h2 id="currentGradeTitle">
+                            <i class="fas fa-list"></i> Todas las Clases
+                        </h2>
+                        <p id="currentGradeDescription">Visualizando todas las planeaciones</p>
+                    </div>
+                    
+                    <div class="view-controls">
+                        <div class="view-toggle">
+                            <button id="listViewBtn" class="view-btn active">
+                                <i class="fas fa-list"></i> Lista
+                            </button>
+                            <button id="calendarViewBtn" class="view-btn">
+                                <i class="fas fa-calendar-alt"></i> Horario
+                            </button>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="filterLevel">Filtrar por grado:</label>
+                            <select id="filterLevel">
+                                <option value="">Todos los grados</option>
+                                <option value="1">Grado 1</option>
+                                <option value="2">Grado 2</option>
+                                <option value="3">Grado 3</option>
+                                <option value="4">Grado 4</option>
+                                <option value="5">Grado 5</option>
+                                <option value="6">Grado 6</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="filterGroup">Filtrar por grupo:</label>
+                            <select id="filterGroup">
+                                <option value="">Todos los grupos</option>
+                                <option value="A">Grupo A</option>
+                                <option value="B">Grupo B</option>
+                                <option value="C">Grupo C</option>
+                                <option value="A-1">Grupo A-1</option>
+                                <option value="A-2">Grupo A-2</option>
+                                <option value="B-1">Grupo B-1</option>
+                                <option value="B-2">Grupo B-2</option>
+                                <option value="C-1">Grupo C-1</option>
+                                <option value="C-2">Grupo C-2</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="filterCycleDay">Filtrar por día del ciclo:</label>
+                            <select id="filterCycleDay">
+                                <option value="">Todos los días</option>
+                                <option value="1">Día 1</option>
+                                <option value="2">Día 2</option>
+                                <option value="3">Día 3</option>
+                                <option value="4">Día 4</option>
+                                <option value="5">Día 5</option>
+                                <option value="6">Día 6</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label for="filterPeriod">Filtrar por período:</label>
+                            <select id="filterPeriod">
+                                <option value="">Todos los períodos</option>
+                                <option value="P1">P1 (7:55 AM - 8:50 AM)</option>
+                                <option value="P2">P2 (9:20 AM - 10:15 AM)</option>
+                                <option value="P3">P3 (10:20 AM - 11:15 AM)</option>
+                                <option value="P4">P4 (11:20 AM - 12:15 PM)</option>
+                                <option value="P5">P5 (1:00 PM - 1:55 PM)</option>
+                                <option value="P6">P6 (2:00 PM - 2:50 PM)</option>
+                            </select>
+                        </div>
+                        
+                        <button id="clearFilters" class="btn-secondary">
+                            <i class="fas fa-times"></i> Limpiar Filtros
+                        </button>
+                    </div>
+                </div>
+
+                <div class="classes-container">
+                    <!-- Vista de Lista -->
+                    <div id="classesList" class="classes-list">
+                        <!-- Las clases se mostrarán aquí dinámicamente -->
+                    </div>
+                    
+                    <!-- Vista de Calendario -->
+                    <div id="calendarView" class="calendar-view" style="display: none;">
+                        <div class="calendar-header">
+                            <h3><i class="fas fa-calendar-alt"></i> Horario Escolar por Ciclos</h3>
+                            <div class="calendar-controls">
+                                <button id="addScheduleBtn" class="btn-primary">
+                                    <i class="fas fa-plus"></i> Asignar Horario
+                                </button>
+                                <button id="annualCalendarBtn" class="btn-secondary">
+                                    <i class="fas fa-calendar"></i> Calendario Anual
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Vista de ciclos (actual) -->
+                        <div id="cyclesView" class="cycles-view">
+                            <div class="cycle-date-selector">
+                                <h4>Configurar Ciclo Escolar</h4>
+                                <div class="cycle-info">
+                                    <i class="fas fa-info-circle"></i>
+                                    <span>Los fines de semana y días festivos se omiten automáticamente del ciclo</span>
+                                </div>
+                                
+                                <div class="month-cycle-config">
+                                    <h5>Configurar Primer Día de Cada Mes</h5>
+                                    <div class="month-selector">
+                                        <label for="monthSelect">Mes:</label>
+                                        <select id="monthSelect">
+                                            <option value="7">Agosto</option>
+                                            <option value="8">Septiembre</option>
+                                            <option value="9">Octubre</option>
+                                            <option value="10">Noviembre</option>
+                                            <option value="11">Diciembre</option>
+                                            <option value="0">Enero</option>
+                                            <option value="1">Febrero</option>
+                                            <option value="2">Marzo</option>
+                                            <option value="3">Abril</option>
+                                            <option value="4">Mayo</option>
+                                            <option value="5">Junio</option>
+                                            <option value="6">Julio</option>
+                                        </select>
+                                    </div>
+                                    <div class="cycle-day-selector">
+                                        <label for="firstCycleDay">Primer día del ciclo:</label>
+                                        <select id="firstCycleDay">
+                                            <option value="1">Día 1</option>
+                                            <option value="2">Día 2</option>
+                                            <option value="3">Día 3</option>
+                                            <option value="4">Día 4</option>
+                                            <option value="5">Día 5</option>
+                                            <option value="6">Día 6</option>
+                                        </select>
+                                    </div>
+                                    <button id="saveMonthConfig" class="btn-primary">
+                                        <i class="fas fa-save"></i> Guardar Configuración
+                                    </button>
+                                </div>
+                                
+                                <div class="cycle-dates-preview">
+                                    <h5>Vista Previa del Ciclo</h5>
+                                    <div class="cycle-dates-grid">
+                                        <div class="cycle-date-item" data-cycle-day="1">
+                                            <label>Día 1:</label>
+                                            <input type="date" class="cycle-date-input" data-cycle-day="1" readonly>
+                                        </div>
+                                        <div class="cycle-date-item" data-cycle-day="2">
+                                            <label>Día 2:</label>
+                                            <input type="date" class="cycle-date-input" data-cycle-day="2" readonly>
+                                        </div>
+                                        <div class="cycle-date-item" data-cycle-day="3">
+                                            <label>Día 3:</label>
+                                            <input type="date" class="cycle-date-input" data-cycle-day="3" readonly>
+                                        </div>
+                                        <div class="cycle-date-item" data-cycle-day="4">
+                                            <label>Día 4:</label>
+                                            <input type="date" class="cycle-date-input" data-cycle-day="4" readonly>
+                                        </div>
+                                        <div class="cycle-date-item" data-cycle-day="5">
+                                            <label>Día 5:</label>
+                                            <input type="date" class="cycle-date-input" data-cycle-day="5" readonly>
+                                        </div>
+                                        <div class="cycle-date-item" data-cycle-day="6">
+                                            <label>Día 6:</label>
+                                            <input type="date" class="cycle-date-input" data-cycle-day="6" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="schedule-grid">
+                                <div class="schedule-header">
+                                    <div class="period-header">Período</div>
+                                    <div class="day-header" data-cycle-day="1">
+                                        <div class="day-info">
+                                            <div class="day-name">Día 1</div>
+                                            <div class="day-date" id="day1-date">-</div>
+                                        </div>
+                                    </div>
+                                    <div class="day-header" data-cycle-day="2">
+                                        <div class="day-info">
+                                            <div class="day-name">Día 2</div>
+                                            <div class="day-date" id="day2-date">-</div>
+                                        </div>
+                                    </div>
+                                    <div class="day-header" data-cycle-day="3">
+                                        <div class="day-info">
+                                            <div class="day-name">Día 3</div>
+                                            <div class="day-date" id="day3-date">-</div>
+                                        </div>
+                                    </div>
+                                    <div class="day-header" data-cycle-day="4">
+                                        <div class="day-info">
+                                            <div class="day-name">Día 4</div>
+                                            <div class="day-date" id="day4-date">-</div>
+                                        </div>
+                                    </div>
+                                    <div class="day-header" data-cycle-day="5">
+                                        <div class="day-info">
+                                            <div class="day-name">Día 5</div>
+                                            <div class="day-date" id="day5-date">-</div>
+                                        </div>
+                                    </div>
+                                    <div class="day-header" data-cycle-day="6">
+                                        <div class="day-info">
+                                            <div class="day-name">Día 6</div>
+                                            <div class="day-date" id="day6-date">-</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="schedule-body" id="scheduleBody">
+                                    <!-- El horario se generará dinámicamente -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Vista de calendario anual -->
+                        <div id="annualView" class="annual-view" style="display: none;">
+                            <div class="annual-header">
+                                <div class="school-year-selector">
+                                    <label for="schoolYearSelect">Año Escolar:</label>
+                                    <select id="schoolYearSelect">
+                                        <option value="2025-2026">2025 - 2026</option>
+                                    </select>
+                                    <button id="addSchoolYearBtn" class="btn-secondary">
+                                        <i class="fas fa-plus"></i> Nuevo Año
+                                    </button>
+                                </div>
+                                
+                                <div class="month-navigation">
+                                    <button id="prevMonth" class="nav-btn">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <h3 id="currentMonth">Agosto 2025</h3>
+                                    <button id="nextMonth" class="nav-btn">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                                
+                                <div class="cycle-controls">
+                                    <div class="cycle-selector">
+                                        <label for="cycleSelect">Ciclo:</label>
+                                        <select id="cycleSelect">
+                                            <option value="1">Ciclo 1</option>
+                                            <option value="2">Ciclo 2</option>
+                                            <option value="3">Ciclo 3</option>
+                                            <option value="4">Ciclo 4</option>
+                                            <option value="5">Ciclo 5</option>
+                                            <option value="6">Ciclo 6</option>
+                                        </select>
+                                    </div>
+                                    <div class="cycle-start-selector">
+                                        <label for="cycleStartDay">Inicio Ciclo:</label>
+                                        <select id="cycleStartDay">
+                                            <option value="1">Día 1</option>
+                                            <option value="2">Día 2</option>
+                                            <option value="3">Día 3</option>
+                                            <option value="4">Día 4</option>
+                                            <option value="5">Día 5</option>
+                                            <option value="6">Día 6</option>
+                                        </select>
+                                    </div>
+                                    <button id="manageNonSchoolDaysBtn" class="btn-secondary">
+                                        <i class="fas fa-calendar-times"></i> Días No Lectivos
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="calendar-grid">
+                                <div class="calendar-weekdays">
+                                    <div class="weekday">Lun</div>
+                                    <div class="weekday">Mar</div>
+                                    <div class="weekday">Mié</div>
+                                    <div class="weekday">Jue</div>
+                                    <div class="weekday">Vie</div>
+                                    <div class="weekday">Sáb</div>
+                                    <div class="weekday">Dom</div>
+                                </div>
+                                <div id="calendarDays" class="calendar-days">
+                                    <!-- Se llena dinámicamente -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Supabase Scripts -->
+    <script src="supabase-config.js"></script>
+    <script src="supabase-service.js"></script>
+    <script src="auth-component.js"></script>
+    <script src="script-new.js"></script>
+</body>
+</html>

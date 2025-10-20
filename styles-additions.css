@@ -1,0 +1,275 @@
+/* Configuración de Mes y Ciclo */
+.month-cycle-config {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.month-cycle-config h5 {
+    color: #495057;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.month-cycle-config h5::before {
+    content: "⚙️";
+    font-size: 1.1rem;
+}
+
+.month-selector, .cycle-day-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.month-selector label, .cycle-day-selector label {
+    font-weight: 600;
+    color: #495057;
+    min-width: 120px;
+    font-size: 0.9rem;
+}
+
+.month-selector select, .cycle-day-selector select {
+    padding: 8px 12px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    background: white;
+    font-weight: 500;
+    color: #495057;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    min-width: 150px;
+}
+
+.month-selector select:focus, .cycle-day-selector select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+#saveMonthConfig {
+    width: 100%;
+    padding: 12px;
+    font-size: 0.95rem;
+    margin-top: 10px;
+}
+
+/* Vista Previa del Ciclo */
+.cycle-dates-preview {
+    background: #fff;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.cycle-dates-preview h5 {
+    color: #495057;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cycle-dates-preview h5::before {
+    content: "👁️";
+    font-size: 1.1rem;
+}
+
+.cycle-date-input[readonly] {
+    background: #f8f9fa;
+    color: #6c757d;
+    cursor: default;
+}
+
+.cycle-date-input[readonly]:focus {
+    border-color: #dee2e6;
+    box-shadow: none;
+}
+
+/* Responsive para configuración de mes */
+@media (max-width: 768px) {
+    .month-selector, .cycle-day-selector {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+    
+    .month-selector label, .cycle-day-selector label {
+        min-width: auto;
+    }
+    
+    .month-selector select, .cycle-day-selector select {
+        width: 100%;
+        min-width: auto;
+    }
+}
+
+/* Información del ciclo */
+.cycle-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #e6f3ff;
+    border: 1px solid #b3d9ff;
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #0066cc;
+}
+
+.cycle-info i {
+    color: #0066cc;
+    font-size: 1rem;
+}
+
+.cycle-info span {
+    font-weight: 500;
+}
+
+/* Configurador de Fechas del Ciclo */
+.cycle-date-selector {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.cycle-date-selector h4 {
+    color: #4a5568;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cycle-date-selector h4::before {
+    content: "📅";
+    font-size: 1.2rem;
+}
+
+.cycle-dates-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.cycle-date-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: #f7fafc;
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.cycle-date-item:hover {
+    border-color: #667eea;
+    background: #f0f4ff;
+}
+
+.cycle-date-item label {
+    font-weight: 600;
+    color: #4a5568;
+    min-width: 50px;
+    font-size: 0.9rem;
+}
+
+.cycle-date-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #cbd5e0;
+    border-radius: 6px;
+    background: white;
+    font-size: 0.9rem;
+    color: #4a5568;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cycle-date-input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Headers de días mejorados */
+.day-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px 10px;
+    text-align: center;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.day-header:hover {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b46c1 100%);
+    transform: translateY(-2px);
+}
+
+.day-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.day-name {
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+.day-date {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+.day-date.editable {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 6px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.day-date.editable:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+/* Responsive para configurador de fechas */
+@media (max-width: 768px) {
+    .cycle-dates-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .cycle-date-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+    }
+    
+    .cycle-date-item label {
+        min-width: auto;
+    }
+    
+    .cycle-date-input {
+        width: 100%;
+    }
+}
